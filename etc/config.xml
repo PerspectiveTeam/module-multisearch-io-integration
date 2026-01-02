@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <perspective_multisearch_io>
+            <general>
+                <enabled>1</enabled>
+                <api_id>11740</api_id>
+                <api_url>https://api.multisearch.io</api_url>
+            </general>
+            <analytics>
+                <tracking_id>demo</tracking_id>
+                <api_url>https://track.multisearch.io/</api_url>
+            </analytics>
+            <autocomplete>
+                <chips></chips>
+                <category_link_type>multisearch_io_category_id_plus_query</category_link_type>
+            </autocomplete>
+        </perspective_multisearch_io>
+    </default>
+</config>
