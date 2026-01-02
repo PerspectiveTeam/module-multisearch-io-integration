@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/multisearchio/search/" method="GET">
+        <service class="Perspective\MultisearchIo\Api\AutocompleteSearchInterface" method="getAutocomplete"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/multisearchio/search/" method="DELETE">
+        <service class="Perspective\MultisearchIo\Api\AutocompleteSearchInterface" method="deleteFromHistory"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

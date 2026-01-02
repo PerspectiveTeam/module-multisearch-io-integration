@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="perspective_multisearch_io" sortOrder="100" showInWebsite="1" showInStore="1" showInDefault="1"
+                 translate="label">
+            <label>multisearch.io</label>
+            <tab>perspective</tab>
+            <resource>Perspective_MultisearchIo::settings</resource>
+            <group id="general" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>General</label>
+                <field id="enabled" type="select" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>Module enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="api_id" type="text" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>API ID</label>
+                </field>
+                <field id="api_url" type="text" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>API URL</label>
+                </field>
+            </group>
+            <group id="analytics" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Analytics</label>
+                <field id="tracking_id" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>Multisearch.io TrackerID</label>
+                </field>
+                <field id="api_url" type="text" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>API URL</label>
+                </field>
+            </group>
+            <group id="autocomplete" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Autocomplete</label>
+                <field id="chips" type="multiselect" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>Autocomplete Chips</label>
+                    <source_model>Perspective\MultisearchIo\Model\Autocomplete\Config\Source\AttributesSource</source_model>
+                </field>
+                <field id="category_link_type" type="select" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>Category Link Type</label>
+                    <source_model>Perspective\MultisearchIo\Model\Autocomplete\Config\Source\CategoryLinkType</source_model>
+                    <comment><![CDATA[
+                        You can choose between <strong>Magento Category Rewrite</strong> or <strong>Multisearch.io Category ID + Query</strong>.
+                    ]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

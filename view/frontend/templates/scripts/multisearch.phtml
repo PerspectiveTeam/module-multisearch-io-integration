@@ -1,0 +1,15 @@
+<?php
+use Hyva\Theme\Model\ViewModelRegistry;
+use Magento\Framework\Escaper;
+use Perspective\MultisearchIo\Model\MultisearchViewModel;
+
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var MultisearchViewModel $multisearchViewModel */
+
+$multisearchViewModel = $viewModels->require(MultisearchViewModel::class);
+?>
+<script>
+    var CURRENT_MULTISEARCH_REQUEST_URI = '<?=  /* @noEscape */ ($multisearchViewModel->getMultisearchRequestUri()) ?>';
+    var MULTISEARCH_TRACKER_ID = '<?=  /* @noEscape */ ($multisearchViewModel->getMultisearchTrackerId()) ?>';
+</script>

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!--    Інтродюсимо свій список атрибутів-->
+    <virtualType name="multisearchFilterList" type="Perspective\MultisearchIo\Model\Layer\FilterList">
+        <arguments>
+<!--            для наших цілей не треба, але без нього крашится-->
+            <argument name="filterableAttributes" xsi:type="object">Perspective\MultisearchIo\Model\Layer\Search\FilterableAttributeList</argument>
+        </arguments>
+    </virtualType>
+<!--    Підкидуємо список в Навігацію-->
+    <virtualType name="Perspective\MultisearchIo\Block\Navigation\Search" type="Magento\LayeredNavigation\Block\Navigation">
+        <arguments>
+            <argument name="filterList" xsi:type="object">multisearchFilterList</argument>
+        </arguments>
+    </virtualType>
+<!--    Створюємо свій Layer-->
+    <type name="Magento\Catalog\Model\Layer\Resolver">
+        <arguments>
+            <argument name="layersPool" xsi:type="array">
+                <item name="multisearch" xsi:type="string">Perspective\MultisearchIo\Model\Layer\Multisearch</item>
+            </argument>
+        </arguments>
+    </type>
+<!--    Додаємо в наш Layer контекст-->
+    <type name="Perspective\MultisearchIo\Model\Layer\Multisearch">
+        <arguments>
+            <argument name="context" xsi:type="object">Perspective\MultisearchIo\Model\Layer\Search\Context</argument>
+        </arguments>
+    </type>
+<!--    Додаємо свій провайдер для колекції-->
+    <virtualType name="Perspective\MultisearchIo\Model\Layer\Search\Context" type="Magento\Catalog\Model\Layer\Search\Context">
+        <arguments>
+            <argument name="collectionProvider" xsi:type="object">Perspective\MultisearchIo\Model\Layer\Search\ItemCollectionProvider</argument>
+            <argument name="stateKey" xsi:type="object">Magento\CatalogSearch\Model\Layer\Search\StateKey</argument>
+        </arguments>
+    </virtualType>
+<!--    Підкидуємо пошуковий двіжок до колекції по аналогії з OpenSearch-->
+    <type name="Perspective\MultisearchIo\Model\ResourceModel\MultisearchFulltext\Collection">
+        <arguments>
+            <argument name="search" xsi:type="object">Perspective\MultisearchIo\Model\Search</argument>
+            <argument name="totalRecordsResolverFactory" xsi:type="object">elasticsearchTotalRecordsResolver\Factory</argument>
+            <argument name="searchCriteriaResolverFactory" xsi:type="object">elasticsearchSearchCriteriaResolverFactory</argument>
+            <argument name="searchResultApplierFactory" xsi:type="object">elasticsearchSearchResultApplier\Factory</argument>
+        </arguments>
+    </type>
+<!--    Налаштовуємо Движок-->
+    <type name="Perspective\MultisearchIo\Model\Search">
+        <arguments>
+            <argument name="searchEngine" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine</argument>
+        </arguments>
+    </type>
+<!--    Додаємо свою фабрику адаптера до движка-->
+    <type name="Perspective\MultisearchIo\Model\Search\SearchEngine">
+        <arguments>
+            <argument name="adapterFactory" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine\AdapterFactory</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\CatalogSearch\Model\Search\RequestGenerator">
+        <plugin name="pst_cat_search_model_search_req_gen_plugin"
+                type="Perspective\MultisearchIo\Model\Search\RequestGeneratorPlugin"
+                sortOrder="100"/>
+    </type>
+<!--    Необхідно викнонати свою реалізацію аналітики-->
+    <preference for="Perspective\MultisearchIo\Api\AnalyticsInterface" type="Perspective\MultisearchIo\Model\Analytics\Analytics"/>
+    <preference for="Perspective\MultisearchIo\Api\UserContextInterface" type="Perspective\MultisearchIo\Model\User\UserContext"/>
+<!--    Маппінг сортування. Для імплементації інших сортувань - створити і імплементувати інтерфейс, а потім прокинути використовуючи DI -->
+    <preference for="Perspective\MultisearchIo\Api\SortMappingInterface" type="Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\SortMapping"/>
+    <type name="Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\RequestBuilder">
+        <arguments>
+            <argument name="sortMapping" xsi:type="object">Perspective\MultisearchIo\Api\SortMappingInterface</argument>
+        </arguments>
+    </type>
+<!--    Додаємо Реквест білдер до адаптера-->
+    <type name="Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\RequestBuilder</argument>
+            <argument name="responseConverter" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\ResponseConverter</argument>
+        </arguments>
+    </type>
+
+<!--    Автокомпліт колекція-->
+    <type name="Perspective\MultisearchIo\Model\ResourceModel\MultisearchAutocomplete\Collection">
+        <arguments>
+            <argument name="search" xsi:type="object">Perspective\MultisearchIo\Model\Search\Autocomplete</argument>
+            <argument name="totalRecordsResolverFactory" xsi:type="object">elasticsearchTotalRecordsResolver\Factory</argument>
+            <argument name="searchCriteriaResolverFactory" xsi:type="object">elasticsearchSearchCriteriaResolverFactory</argument>
+            <argument name="searchResultApplierFactory" xsi:type="object">elasticsearchSearchResultApplier\Factory</argument>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+<!--    Налаштовуємо Движок Автокомпліта-->
+    <virtualType name="Perspective\MultisearchIo\Model\Search\Autocomplete" type="Perspective\MultisearchIo\Model\Search">
+        <arguments>
+            <argument name="searchEngine" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine\Autocomplete</argument>
+            <argument name="searchResponseBuilder" xsi:type="object">Perspective\MultisearchIo\Model\Autocomplete\SearchResponseBuilder</argument>
+        </arguments>
+    </virtualType>
+    <!--    Додаємо свою фабрику адаптера до движка автокомпліта-->
+    <virtualType name="Perspective\MultisearchIo\Model\Search\SearchEngine\Autocomplete" type="Perspective\MultisearchIo\Model\Search\SearchEngine">
+        <arguments>
+            <argument name="adapterFactory" xsi:type="object">Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\AdapterFactory</argument>
+        </arguments>
+    </virtualType>
+    <type name="Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\AdapterFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\Adapter</argument>
+        </arguments>
+    </type>
+<!--    Додаємо адаптер автокомпліта на основі адаптера фултекста-->
+    <type name="Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\Adapter">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\Adapter\RequestBuilder</argument>
+            <argument name="responseConverter" xsi:type="object">Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\Adapter\ResponseConverter</argument>
+        </arguments>
+    </type>
+<!--    Преференс для webapi сервісу-->
+    <preference for="Perspective\MultisearchIo\Api\AutocompleteSearchInterface" type="Perspective\MultisearchIo\Service\Search"/>
+<!--    Налаштовуємо конвертер відповіді, щоб той вміщав і suggestions -->
+    <type name="Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\Adapter\ResponseConverter">
+        <arguments>
+            <argument name="queryResponseFactory" xsi:type="object">Perspective\MultisearchIo\Model\Autocomplete\Response\QueryResponseFactory</argument>
+        </arguments>
+    </type>
+    <type name="Perspective\MultisearchIo\Model\Autocomplete\Response\QueryResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Perspective\MultisearchIo\Model\Autocomplete\Response\QueryResponse</argument>
+        </arguments>
+    </type>
+<!--    Налаштовуємо result object для автокомліту-->
+    <virtualType name="Perspective\MultisearchIo\Api\Search\SearchResultFactory" type="Magento\Framework\Api\Search\SearchResultFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Perspective\MultisearchIo\Model\Autocomplete\SearchResult</argument>
+        </arguments>
+    </virtualType>
+    <type name="Perspective\MultisearchIo\Model\Autocomplete\SearchResponseBuilder">
+        <arguments>
+            <argument name="searchResultFactory" xsi:type="object">Perspective\MultisearchIo\Api\Search\SearchResultFactory</argument>
+        </arguments>
+    </type>
+<!--    Преференс для Inventory(not MSI) -->
+    <preference for="Perspective\MultisearchIo\Api\AutocompleteCollectionCustomizerInterface" type="Perspective\MultisearchIo\Service\Search\AutocompleteCollectionCustomizer"/>
+<!--    Cache -->
+    <type name="Perspective\MultisearchIo\Service\Cache\OperationsCache">
+        <arguments>
+            <argument name="cache" xsi:type="object">Perspective\MultisearchIo\Model\Cache\OperationsCache</argument>
+        </arguments>
+    </type>
+</config>
