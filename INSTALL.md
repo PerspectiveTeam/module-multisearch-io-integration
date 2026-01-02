@@ -19,6 +19,8 @@ bin/magento setup:di:compile
 bin/magento setup:static-content:deploy
 ```
 
+Для роботи з пошуковим рушієм Multisearch.io необхідно мати обліковий запис на [Multisearch.io](https://multisearch.io/) та отримати API ключі.
+
 ## Сторінка пошуку
 
 Сторінка результатів пошуку доступна за адресою:
