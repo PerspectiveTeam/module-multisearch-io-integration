@@ -1,4 +1,5 @@
 <?php
+
 use Hyva\Theme\Model\ViewModelRegistry;
 use Magento\Framework\Escaper;
 use Perspective\MultisearchIo\Model\MultisearchViewModel;
@@ -6,8 +7,11 @@ use Perspective\MultisearchIo\Model\MultisearchViewModel;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 /** @var MultisearchViewModel $multisearchViewModel */
-
-$multisearchViewModel = $viewModels->require(MultisearchViewModel::class);
+if (empty($viewModels)) {
+    $multisearchViewModel = \Magento\Framework\App\ObjectManager::getInstance()->get(MultisearchViewModel::class);
+} else {
+    $multisearchViewModel = $viewModels->require(MultisearchViewModel::class);
+}
 ?>
 <script>
     var CURRENT_MULTISEARCH_REQUEST_URI = '<?=  /* @noEscape */ ($multisearchViewModel->getMultisearchRequestUri()) ?>';

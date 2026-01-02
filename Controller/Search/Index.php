@@ -6,6 +6,7 @@ use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\RequestSafetyInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
@@ -24,7 +25,8 @@ class Index extends Action implements HttpGetActionInterface, RequestSafetyInter
         private readonly QueryFactory $queryFactory,
         private readonly Resolver $layerResolver,
         private readonly StoreManagerInterface $storeManager,
-        private readonly AnalyticsInterface $analytics
+        private readonly AnalyticsInterface $analytics,
+        private readonly ScopeConfigInterface $scopeConfig
     )
     {
         parent::__construct($context);
@@ -65,7 +67,9 @@ class Index extends Action implements HttpGetActionInterface, RequestSafetyInter
         } else {
             $this->getResponse()->setRedirect($this->_redirect->getRedirectUrl());
         }
-        $this->analytics->sendSearchEvent($queryText);
+        if ($this->scopeConfig->getValue('perspective_multisearch_io/analytics/enabled')) {
+            $this->analytics->sendSearchEvent($queryText);
+        }
     }
 
     /**

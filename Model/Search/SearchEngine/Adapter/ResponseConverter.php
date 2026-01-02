@@ -51,7 +51,7 @@ class ResponseConverter implements ResponseConverterInterface
         return $this->queryResponseFactory->create([
             'documents' => $documents,
             'aggregations' => $this->aggregationFactory->create(['buckets' => $buckets]),
-            'total' => (int)$responseData['total'],
+            'total' => isset($responseData['total']) ? (int)$responseData['total'] : 0,
         ]);
     }
 

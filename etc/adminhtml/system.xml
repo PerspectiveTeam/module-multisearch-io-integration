@@ -25,6 +25,12 @@
             </group>
             <group id="analytics" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
                 <label>Analytics</label>
+                <field id="enabled" type="select" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>Analytics enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>You have to implement your own Analytics service</comment>
+                </field>
                 <field id="tracking_id" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
                        translate="label">
                     <label>Multisearch.io TrackerID</label>
