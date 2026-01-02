@@ -2,9 +2,12 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
+        <tab id="perspective" translate="label" class="perspective-tab" sortOrder="99999998">
+            <label>Perspective Studio</label>
+        </tab>
         <section id="perspective_multisearch_io" sortOrder="100" showInWebsite="1" showInStore="1" showInDefault="1"
                  translate="label">
-            <label>multisearch.io</label>
+            <label>Multisearch.io</label>
             <tab>perspective</tab>
             <resource>Perspective_MultisearchIo::settings</resource>
             <group id="general" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
