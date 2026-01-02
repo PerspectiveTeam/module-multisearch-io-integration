@@ -1,6 +1,7 @@
 # Інтеграція з Multisearch.io для Magento 2
 
 Цей модуль замінює стандартний пошук Magento 2 на швидкий та функціональний пошук від [Multisearch.io](https://multisearch.io/).
+Інструкції з встановлення можна знайти в файлі [INSTALL.md](INSTALL.md).
 
 ## Основні можливості
 
