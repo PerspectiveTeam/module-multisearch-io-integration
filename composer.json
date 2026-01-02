@@ -1,6 +1,6 @@
 {
-    "name": "perspective/module-multisearch-io-integration",
-    "version": "1.7.3",
+    "name": "perspectiveteam/module-multisearch-io-integration",
+    "version": "1.7.4",
     "description": "multisearch.io integration",
     "type": "magento2-module",
     "require": {
