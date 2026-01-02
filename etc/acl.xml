@@ -8,7 +8,7 @@
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
                             <resource id="Perspective_MultisearchIo::settings"
-                                      title="multisearch.io Settings"/>
+                                      title="Multisearch.io Settings"/>
                         </resource>
                     </resource>
                 </resource>
