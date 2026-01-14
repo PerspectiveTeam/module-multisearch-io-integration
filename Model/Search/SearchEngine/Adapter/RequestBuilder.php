@@ -96,6 +96,7 @@ class RequestBuilder extends DataObject implements RequestBuilderInterface
     {
         $query = array_merge([
             \Perspective\MultisearchIo\Api\RequestInterface::PARAM_ID => $this->config->getApiId(),
+            \Perspective\MultisearchIo\Api\RequestInterface::PARAM_SECURITY_KEY => $this->config->getSecurityKey(),
             \Perspective\MultisearchIo\Api\RequestInterface::PARAM_UID => $this->userContext->getUserId(),
         ], $this->getData());
         $query = array_filter($query, fn($value) => $value !== null && $value !== '');

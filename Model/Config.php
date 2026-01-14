@@ -10,7 +10,6 @@ class Config
     public const GROUP_GENERAL = 'general';
 
 
-
     /**
      * @var ScopeConfigInterface
      */
@@ -18,7 +17,8 @@ class Config
 
     public function __construct(
         ScopeConfigInterface $scopeConfig
-    ) {
+    )
+    {
         $this->scopeConfig = $scopeConfig;
     }
 
@@ -35,6 +35,11 @@ class Config
     public function getApiId()
     {
         return $this->getConfig(self::GROUP_GENERAL, 'api_id');
+    }
+
+    public function getSecurityKey()
+    {
+        return $this->getConfig(self::GROUP_GENERAL, 'security_key');
     }
 
 }

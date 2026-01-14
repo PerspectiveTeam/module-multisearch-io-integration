@@ -10,6 +10,8 @@ interface RequestInterface
 
     public const PARAM_ID = 'id';
 
+    public const PARAM_SECURITY_KEY = 'key';
+
     public const PARAM_QUERY = 'query';
 
     public const PARAM_UID = 'uid';

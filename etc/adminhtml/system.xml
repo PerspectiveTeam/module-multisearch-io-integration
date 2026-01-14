@@ -21,7 +21,11 @@
                        translate="label">
                     <label>API ID</label>
                 </field>
-                <field id="api_url" type="text" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                <field id="security_key" type="text" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
+                       translate="label">
+                    <label>Security Key</label>
+                </field>
+                <field id="api_url" type="text" sortOrder="30" showInWebsite="1" showInStore="1" showInDefault="1" canRestore="1"
                        translate="label">
                     <label>API URL</label>
                 </field>

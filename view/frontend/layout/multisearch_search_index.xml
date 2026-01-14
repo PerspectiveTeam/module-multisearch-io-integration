@@ -48,7 +48,8 @@
             </block>
         </referenceContainer>
         <referenceContainer name="before.body.end">
-            <block name="multisearch-scripts" template="Perspective_MultisearchIo::scripts/multisearch.phtml" />
+            <referenceBlock name="multisearch-scripts-all-pages" remove="true" />
+            <block name="multisearch-scripts-search-page" template="Perspective_MultisearchIo::scripts/multisearch_search_page.phtml" />
         </referenceContainer>
     </body>
 </page>
