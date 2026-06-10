@@ -40,6 +40,7 @@ class ResponseConverter extends \Perspective\MultisearchIo\Model\Search\SearchEn
     }
 
     use \Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\ResponseConverter\DocumentProcessorTrait;
+
     public function convert(ResponseInterface $response): \Magento\Framework\Search\ResponseInterface
     {
         $responseData = $this->client->decodeResponseContent($response);
@@ -54,12 +55,16 @@ class ResponseConverter extends \Perspective\MultisearchIo\Model\Search\SearchEn
         list($responseData, $buckets) = $this->prepareFiltersBucket($responseData, $buckets);
         list($responseData, $buckets) = $this->prepareCategoryBucket($responseData, $buckets);
         list($responseData, $buckets) = $this->preparePriceBucket($responseData, $buckets);
+
+        $directData = $this->extractDirectData($responseData);
+
         return $this->queryResponseFactory->create([
             'documents' => $documents,
             'aggregations' => $this->aggregationFactory->create(['buckets' => $buckets]),
             'total' => $responseData['total'] ?? 0,
             'suggestions' => $responseData['results']['suggest'] ?? [],
-            'history' => $responseData['history'] ?? []
+            'history' => $responseData['history'] ?? [],
+            'direct' => $directData,
         ]);
     }
 }

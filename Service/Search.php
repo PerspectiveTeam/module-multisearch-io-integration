@@ -59,6 +59,7 @@ class Search implements AutocompleteSearchInterface
                 'suggestions' => $collection->getSuggestions(),
                 'categories' => $categoriesDto,
                 'history' => $collection->getHistory(),
+                'direct' => $collection->getDirect(),
             ]
         ];
     }

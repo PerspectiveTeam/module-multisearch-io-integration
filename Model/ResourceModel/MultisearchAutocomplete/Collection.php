@@ -502,6 +502,14 @@ class Collection extends \Magento\Catalog\Model\ResourceModel\Product\Collection
         $this->_renderFilters();
         return method_exists($this->searchResult, 'getSuggestions') ? $this->searchResult->getSuggestions() : [];
     }
+    /**
+     * @return array
+     */
+    public function getDirect()
+    {
+        $this->_renderFilters();
+        return method_exists($this->searchResult, 'getDirect') ? $this->searchResult->getDirect() : [];
+    }
 
     /**
      * Цей метод можна використовувати, щоб отримати історію пошукових запитів користувача

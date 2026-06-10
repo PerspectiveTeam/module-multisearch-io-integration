@@ -280,5 +280,21 @@ class ResponseConverter implements ResponseConverterInterface
             'Price'
         ];
     }
+    /**
+     * @param array $responseData
+     * @return array
+     */
+    public function extractDirectData(array $responseData): array
+    {
+        $directData = [];
+
+        if (isset($responseData['direct']) && is_array($responseData['direct'])) {
+            $directData = $responseData['direct'];
+        }
+        if (isset($responseData['direct']) && is_string($responseData['direct'])) {
+            $directData = ['url' => $responseData['direct']];
+        }
+        return $directData;
+    }
 
 }

@@ -54,6 +54,7 @@ class SearchResponseBuilder extends \Magento\Framework\Search\SearchResponseBuil
         $searchResult->setTotalCount($count);
         $searchResult->setSuggestions(method_exists($response, 'getSuggestions') ? $response->getSuggestions() : []);
         $searchResult->setHistory(method_exists($response, 'getHistory') ? $response->getHistory() : []);
+        $searchResult->setDirect(method_exists($response, 'getDirect') ? $response->getDirect() : []);
         return $searchResult;
     }
 }
