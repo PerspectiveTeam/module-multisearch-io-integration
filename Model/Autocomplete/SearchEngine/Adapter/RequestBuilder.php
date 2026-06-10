@@ -4,7 +4,9 @@ namespace Perspective\MultisearchIo\Model\Autocomplete\SearchEngine\Adapter;
 
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Search\Request\EmptyRequestDataException;
+use Perspective\MultisearchIo\Api\GuzzleRequestInterface;
 use Perspective\MultisearchIo\Api\RequestBuilderInterface;
 use Perspective\MultisearchIo\Api\SortMappingInterface;
 use Perspective\MultisearchIo\Api\UserContextInterface;
@@ -28,6 +30,7 @@ class RequestBuilder extends DataObject implements RequestBuilderInterface
         private readonly UserContextInterface $userContext,
         private readonly DataPersistorInterface $dataPersistor,
         private readonly SortMappingInterface $sortMapping,
+        private readonly RemoteAddress $remoteAddress,
         array $data = []
     )
     {
@@ -58,7 +61,7 @@ class RequestBuilder extends DataObject implements RequestBuilderInterface
         $requestBuilder->setData('lang', $lang);
     }
 
-    public function createSearch($method = 'GET'): \Perspective\MultisearchIo\Api\GuzzleRequestInterface
+    public function createSearch($method = 'GET'): GuzzleRequestInterface
     {
         if (strtoupper($method) === 'DELETE') {
             return $this->processDeletion();
@@ -78,10 +81,14 @@ class RequestBuilder extends DataObject implements RequestBuilderInterface
 
         $uri = http_build_query($query);
 
-        $request = $this->bareRequestFactory->create([
+        $data = [
             'method' => 'DELETE',
             'uri' => '/history/?' . $uri,
-        ]);
+        ];
+        if (!empty($this->remoteAddress->getRemoteAddress())) {
+            $data['headers'][self::X_FORWARDED_FOR_HEADER] = $this->remoteAddress->getRemoteAddress();
+        }
+        $request = $this->bareRequestFactory->create($data);
         $this->unsetData();
         return $request;
     }
@@ -107,11 +114,14 @@ class RequestBuilder extends DataObject implements RequestBuilderInterface
         $query = array_filter($query, fn($value) => $value !== null && $value !== '');
 
         $uri = http_build_query($query);
-
-        $request = $this->bareRequestFactory->create([
+        $data = [
             'method' => 'GET',
             'uri' => '/?' . $uri,
-        ]);
+        ];
+        if (!empty($this->remoteAddress->getRemoteAddress())) {
+            $data['headers'][self::X_FORWARDED_FOR_HEADER] = $this->remoteAddress->getRemoteAddress();
+        }
+        $request = $this->bareRequestFactory->create($data);
         $this->dataPersistor->clear(\Perspective\MultisearchIo\Api\RequestInterface::CURRENT_MULTISEARCH_REQUEST_URI);
         $this->dataPersistor->set(\Perspective\MultisearchIo\Api\RequestInterface::CURRENT_MULTISEARCH_REQUEST_URI, $uri);
 
