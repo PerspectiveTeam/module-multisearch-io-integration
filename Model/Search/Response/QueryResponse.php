@@ -15,9 +15,9 @@ class QueryResponse extends \Magento\Framework\Search\Response\QueryResponse imp
      * @SuppressWarnings("php:S107")
      */
     public function __construct(
-        protected $documents,
-        protected $aggregations,
-        private int $total = 0,
+        array $documents,
+        AggregationInterface $aggregations,
+        int $total = 0,
         private ?array $direct = []
     ) {
         parent::__construct($documents, $aggregations, $total);

@@ -9,8 +9,6 @@ class QueryResponse extends \Magento\Framework\Search\Response\QueryResponse imp
 {
 
     /**
-     * @param $documents
-     * @param $aggregations
      * @param Document[] $documents
      * @param AggregationInterface $aggregations
      * @param int $total
@@ -20,9 +18,9 @@ class QueryResponse extends \Magento\Framework\Search\Response\QueryResponse imp
      * @SuppressWarnings("php:S1068")
      */
     public function __construct(
-        protected $documents,
-        protected $aggregations,
-        private int $total = 0,
+        array $documents,
+        AggregationInterface $aggregations,
+        int $total = 0,
         private ?array $suggestions = [],
         private ?array $history = [],
         private ?array $direct = []
