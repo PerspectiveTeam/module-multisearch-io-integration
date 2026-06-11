@@ -40,6 +40,7 @@ class ResponseConverter implements ResponseConverterInterface
         $productIds = $this->getProductIds($responseData);
 
         $documents = $this->getDocumentsByProductIds($productIds);
+        $directData = $this->extractDirectData($responseData);
 
         /**
          * Увага! Multisearch.io не повертає більше 50 бакетів.
@@ -52,6 +53,7 @@ class ResponseConverter implements ResponseConverterInterface
             'documents' => $documents,
             'aggregations' => $this->aggregationFactory->create(['buckets' => $buckets]),
             'total' => isset($responseData['total']) ? (int)$responseData['total'] : 0,
+            'direct' => $directData,
         ]);
     }
 

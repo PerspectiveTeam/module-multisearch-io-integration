@@ -48,6 +48,7 @@
     <type name="Perspective\MultisearchIo\Model\Search">
         <arguments>
             <argument name="searchEngine" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine</argument>
+            <argument name="searchResponseBuilder" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchResponseBuilder</argument>
         </arguments>
     </type>
 <!--    Додаємо свою фабрику адаптера до движка-->
@@ -77,6 +78,26 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\RequestBuilder</argument>
             <argument name="responseConverter" xsi:type="object">Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\ResponseConverter</argument>
+        </arguments>
+    </type>
+    <type name="Perspective\MultisearchIo\Model\Search\SearchEngine\Adapter\ResponseConverter">
+        <arguments>
+            <argument name="queryResponseFactory" xsi:type="object">Perspective\MultisearchIo\Model\Search\Response\QueryResponseFactory</argument>
+        </arguments>
+    </type>
+    <type name="Perspective\MultisearchIo\Model\Search\Response\QueryResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Perspective\MultisearchIo\Model\Search\Response\QueryResponse</argument>
+        </arguments>
+    </type>
+    <virtualType name="Perspective\MultisearchIo\Api\Search\FulltextSearchResultFactory" type="Magento\Framework\Api\Search\SearchResultFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Perspective\MultisearchIo\Model\Search\SearchResult</argument>
+        </arguments>
+    </virtualType>
+    <type name="Perspective\MultisearchIo\Model\Search\SearchResponseBuilder">
+        <arguments>
+            <argument name="searchResultFactory" xsi:type="object">Perspective\MultisearchIo\Api\Search\FulltextSearchResultFactory</argument>
         </arguments>
     </type>
 

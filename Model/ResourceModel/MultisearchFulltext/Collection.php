@@ -439,4 +439,13 @@ class Collection extends \Magento\Catalog\Model\ResourceModel\Product\Collection
         }
         return $result;
     }
+
+    /**
+     * @return array
+     */
+    public function getDirect()
+    {
+        $this->_renderFilters();
+        return method_exists($this->searchResult, 'getDirect') ? $this->searchResult->getDirect() : [];
+    }
 }
